@@ -1,4 +1,5 @@
 // Setup basic express server
+require('dotenv').config();
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
@@ -6,9 +7,12 @@ var io = require('socket.io')(server);
 var redis = require('socket.io-redis');
 var port = process.env.PORT || 3000;
 var serverName = process.env.NAME || 'Unknown';
-console.log('server');
+var redisHost = process.env.REDIS_HOST;
+var redisPort = process.env.REDIS_PORT;
+var redisAuth = process.env.REDIS_AUTH;
 
-io.adapter(redis({ host: 'localhost', port: 6379 }));
+
+io.adapter(redis({ host: redisHost, port: redisPort, auth_pass: redisAuth }));
 
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
